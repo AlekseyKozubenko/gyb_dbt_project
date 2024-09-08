@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: fct_sales
+    columns:
+      - name: sale_id
+        data_tests:
+          - unique
+          - not_null
+      - name: product_name
+        data_tests:
+          - not_null
+      - name: country
+        data_tests:
+          - not_null
+      - name: campaign
+        data_tests:
+          - not_null
+      - name: source
+        data_tests:
+          - not_null
+      - name: total_revenue
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+      - name: rebill_revenue
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+      - name: number_of_rebills
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+      - name: discount_amount
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+      - name: returned_amount
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+      - name: order_date_kyiv
+        data_tests:
+          - not_null
+
+    data_tests:
+      - dbt_utils.expression_is_true:
+          expression: "total_revenue >= 0"
+      - dbt_utils.expression_is_true:
+          expression: "rebill_revenue <= total_revenue"
